@@ -1,0 +1,59 @@
+{
+	"name": "@leesven/pi-other-provider",
+	"version": "0.1.0",
+	"description": "Additional native model providers for pi",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lixianyang/pi-other-provider.git"
+	},
+	"homepage": "https://github.com/lixianyang/pi-other-provider#readme",
+	"bugs": {
+		"url": "https://github.com/lixianyang/pi-other-provider/issues"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
+	"packageManager": "npm@12.0.2",
+	"type": "module",
+	"keywords": [
+		"pi-package",
+		"pi",
+		"ollama",
+		"llm"
+	],
+	"files": [
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"pi": {
+		"extensions": [
+			"./src/index.ts"
+		]
+	},
+	"scripts": {
+		"check": "biome check --error-on-warnings . && tsc --noEmit",
+		"format": "biome check --write .",
+		"generate:ollama-cloud-models": "node ./scripts/generate-ollama-cloud-models.ts",
+		"test": "vitest run",
+		"release:check": "npm run check && npm test && npm audit --omit=dev --audit-level=high && npm pack --dry-run",
+		"prepublishOnly": "npm run release:check"
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-ai": "*",
+		"@earendil-works/pi-coding-agent": "*"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.5",
+		"@earendil-works/pi-ai": "0.84.0",
+		"@earendil-works/pi-coding-agent": "0.84.0",
+		"@types/node": "24.12.4",
+		"typescript": "5.9.3",
+		"vitest": "4.1.9"
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	}
+}
