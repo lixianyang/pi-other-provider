@@ -1,0 +1,49 @@
+name: Provider request
+description: Propose support for another model provider
+title: "[Provider]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Provider additions should fit pi's native provider API and avoid unnecessary commands or configuration surfaces.
+
+  - type: input
+    id: provider
+    attributes:
+      label: Provider
+      description: Official provider or service name.
+    validations:
+      required: true
+
+  - type: input
+    id: documentation
+    attributes:
+      label: Official API documentation
+      placeholder: https://example.com/docs/api
+    validations:
+      required: true
+
+  - type: textarea
+    id: authentication
+    attributes:
+      label: Authentication and API compatibility
+      description: Describe authentication, model-list endpoints, and any OpenAI or Anthropic compatibility.
+    validations:
+      required: true
+
+  - type: textarea
+    id: metadata
+    attributes:
+      label: Model metadata
+      description: Explain how model IDs, context windows, vision, thinking, and other capabilities can be discovered.
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why this belongs in pi-other-provider
+    validations:
+      required: true

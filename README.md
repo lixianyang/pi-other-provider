@@ -1,9 +1,19 @@
 # pi-other-provider
 
+[![CI](https://github.com/lixianyang/pi-other-provider/actions/workflows/ci.yml/badge.svg)](https://github.com/lixianyang/pi-other-provider/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/%40leesven%2Fpi-other-provider)](https://www.npmjs.com/package/@leesven/pi-other-provider)
+[![license](https://img.shields.io/npm/l/%40leesven%2Fpi-other-provider)](LICENSE)
+
 Native [pi](https://github.com/earendil-works/pi) providers that are not bundled with pi itself.
 
 The first provider is `ollama-cloud`. It discovers the Ollama Cloud model catalog, reads model capabilities and context
 windows, and delegates inference to pi's existing OpenAI-compatible streaming implementation.
+
+## Providers
+
+| Provider | Status | Authentication | Model catalog |
+| --- | --- | --- | --- |
+| Ollama Cloud (`ollama-cloud`) | Supported | `OLLAMA_API_KEY` or `/login ollama-cloud` | Automatic discovery with an offline fallback |
 
 ## Requirements
 
@@ -58,6 +68,42 @@ catalog cache, then refreshes stale metadata in the background. Catalog entries 
 
 The provider intentionally adds no provider-specific commands, cache files, configuration files, or UI.
 
+## How model discovery works
+
+The package ships a generated Ollama Cloud catalog so models are available before the first network refresh. When the
+catalog is stale, the provider asks Ollama Cloud for the current model list and model details, maps capabilities such as
+context windows, vision, and thinking support into pi's native model metadata, and publishes the result atomically.
+
+Transient or suspicious catalog responses keep the last known good catalog. Runtime API keys are resolved by pi and are
+never written by this package.
+
+## Troubleshooting
+
+### The extension is missing at startup
+
+Confirm that the npm package is installed and avoid loading a local checkout at the same time:
+
+```bash
+pi list
+```
+
+Reinstall the published package if necessary:
+
+```bash
+pi remove npm:@leesven/pi-other-provider
+pi install npm:@leesven/pi-other-provider
+```
+
+### Ollama Cloud models are missing
+
+Confirm that `OLLAMA_API_KEY` is available to the process running pi, or run `/login ollama-cloud`. Then restart pi and
+open `/model` again. A failed background refresh keeps the offline or last known good catalog rather than clearing it.
+
+### Requests fail after selecting a model
+
+Check that the API key is active and has access to Ollama Cloud. Do not paste API keys into issues, logs, screenshots, or
+other public reports.
+
 ## Provider architecture
 
 Each provider is an isolated native pi `Provider` implementation under `src/providers/<provider-id>/`. Adding another
@@ -74,8 +120,20 @@ npm test
 ```
 
 The generated catalog is public metadata fetched without an API key. Runtime refreshes use the configured key and can
-therefore reflect the catalog available to that credential. API keys are resolved by pi and are never written by this
-package.
+therefore reflect the catalog available to that credential.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for provider architecture, testing expectations, and the release process.
+
+## Security
+
+Pi extensions execute with the permissions of the pi process. Review third-party extension source before installation.
+To report a vulnerability, follow [SECURITY.md](SECURITY.md) and do not open a public issue.
+
+## Releases
+
+This project follows semantic versioning. While the package is below `1.0.0`, minor releases may include breaking
+changes. Releases are published from GitHub Actions through npm Trusted Publishing; the Git tag and `package.json`
+version must match.
 
 ## License
 

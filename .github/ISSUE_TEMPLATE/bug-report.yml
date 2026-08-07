@@ -1,0 +1,67 @@
+name: Bug report
+description: Report reproducible incorrect behavior in a supported provider
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Never include API keys, tokens, or other credentials.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: I removed all credentials from this report and its attachments.
+          required: true
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package version
+      placeholder: 0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: runtime-versions
+    attributes:
+      label: Pi and Node.js versions
+      placeholder: pi 0.84.0, Node.js 24.x
+    validations:
+      required: true
+
+  - type: input
+    id: provider-model
+    attributes:
+      label: Provider and model
+      placeholder: ollama-cloud / model-name
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Include the smallest reliable sequence that reproduces the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and sanitized logs
+      description: Remove credentials and personal information before submitting.
+    validations:
+      required: true
